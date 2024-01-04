@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import {StatusBar} from 'expo-status-bar'
 import {  StyleSheet, Text, View,Dimensions, FlatList, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
 import GeonerCard from '../components/GeonerCard';
-import ItemSeporator from '../components/itemSeporator';
-
+import ItemSep from '../components/ItemSep';
+import Moviecard from '../components/moviecard';
+import { getNowPlaying,getPoster } from '../service/MovieService';
 const geners=["all","action","comedy","hagsgh"]
 export default function Home() {
-    const [activeg,setActiveg]=useState("all")
+    const [state,setstate]=useState("all")
+    const [nowPlaying,setnowPlaying]=useState({})
+    useEffect(() => {
+      getNowPlaying().then((movieRes)=>setnowPlaying(movieRes.data))
+     
+    }, [])
+    
   return (
 
     <ScrollView contentContainerStyle={styles.container}>
@@ -29,9 +36,42 @@ export default function Home() {
 
         <View style={{padding:10}} >
 
-            <FlatList ListHeaderComponent={()=>ItemSeporator(10)} showsHorizontalScrollIndicator={false} ItemSeparatorComponent={()=><ItemSeporator width={50}/>} 
-            horizontal data={geners} keyExtractor={item=>item} style={{gap:10}} renderItem={({item,index})=><GeonerCard names={item}
-            active={item===activeg?true:false}/>}  onPress={(names)=>setActiveg(names)}/>
+            <FlatList
+              showsHorizontalScrollIndicator={false} 
+            horizontal
+             data={geners} 
+             ItemSeparatorComponent={()=><ItemSep width={10} />}
+             ListHeaderComponent={()=><ItemSep width={5}/>}
+             ListFooterComponent={()=><ItemSep width={10}/>}
+             keyExtractor={item=>item}
+              style={{padding:10}}
+               renderItem={({item})=>
+               <GeonerCard names={item}
+            active={item===state?true:false} 
+              onPress={(names)=>setstate(names)} />}
+            />
+
+        </View>
+        <View style={{padding:10}} >
+
+            <FlatList
+              showsHorizontalScrollIndicator={false} 
+            horizontal
+             data={nowPlaying.results} 
+             ItemSeparatorComponent={()=><ItemSep width={10} />}
+             ListHeaderComponent={()=><ItemSep width={5}/>}
+             ListFooterComponent={()=><ItemSep width={10}/>}
+             keyExtractor={item=>item.id.toString()}
+              style={{padding:10}}
+               renderItem={({item})=><Moviecard
+               title={item.title}
+               language={item.original_language}
+               voteAverage={item.vote_average}
+
+               voteCount={item.vote_count}
+               poster={item.poster_path}
+               />}
+            />
 
         </View>
 
@@ -45,7 +85,8 @@ const styles = StyleSheet.create({
     alignItems: 'start',
     justifyContent: 'start',
     padding:"10px",
-    backgroundColor: Colors.BASIC_COLOR,
+    backgroundColor: "white",
+    color:"white"
   },
   header: {
     flexDirection:"row",

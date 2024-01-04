@@ -4,8 +4,10 @@ const {height,width}=Dimensions.get("screen")
 const setWidth=(w)=>width/100*w
 function GeonerCard({names,active,onPress}) {
   return (
-    <TouchableOpacity style={{...styles.container,backgroundColor:active?"blue" :"white"}} activeOpacity={0.5}>
-        <Text style={{color:"white"}}>{names}</Text>
+    <TouchableOpacity
+    onPress={()=>onPress(names)}
+    activeOpacity={0.5} style={{...styles.container,backgroundColor:active?"black" :"white"}}>
+        <Text style={{color:active?"white":"black"}}>{names}</Text>
     </TouchableOpacity>
   )
 }
@@ -15,17 +17,15 @@ const styles=StyleSheet.create({
     
         justifyContent:"center",
         alignItems:"center",
-        borderRadius:20,
+        borderRadius:20,  
         backgroundColor:"black",
         opacity:0.8,
         
         paddingVertical:8,
-        marginVertical:2,
         gap:5,
         elevation:3,
-        width:setWidth(25),
+        width:setWidth(20),
         
-        marginLeft:10,
         margin:10
 
     }
