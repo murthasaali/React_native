@@ -7,6 +7,8 @@ const API_KEY="5ffedd020d54799a5fec216372826fa1"
 const ENDPOINTS={
     NOW_PLAYING:"/movie/now_playing",
     UPCOMING_PLAYING:"/movie/upcoming",
+    SEARCH: "/search/movie",
+
 }
 
 export {TMDB_BASE_URL,TMDB_IMG_BASE_URL,API_KEY,ENDPOINTS}
