@@ -1,4 +1,4 @@
-import React, { useState ,useEffect,useCallback} from 'react';
+import React, { useState ,useEffect,useCallback, useRef} from 'react';
 import {StatusBar} from 'expo-status-bar'
 import {  StyleSheet, Text, View,Dimensions, FlatList,  Modal,
   ScrollView, TextInput, TouchableOpacity ,  Animated,
@@ -9,22 +9,28 @@ import GeonerCard from '../components/GeonerCard';
 import ItemSep from '../components/ItemSep';
 import Moviecard from '../components/moviecard';
 import { FontAwesome } from '@expo/vector-icons';
+import { Video } from 'expo-av';
 
+import images from '../constants/images';
 import { Entypo } from '@expo/vector-icons';
 import { getNowPlaying,getPoster,getSearchData, getUpcoming } from '../service/MovieService';
 const geners=["all","action","comedy","hagsgh"]
 export default function Home() {
+  const windowDimensions = Dimensions.get('window');
     const [state,setstate]=useState("all")
     const [nowPlaying,setnowPlaying]=useState({})
     const [upcoming,setUpcoming]=useState({})
     const [search, setSearch] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [searchText, setSearchText] = useState('');
+    const myRef=useRef(null)
     const [searchResults, setSearchResults] = useState([]); // State to store search results
     console.log("result",searchResults)
     useEffect(() => {
       getNowPlaying().then((movieRes) => setnowPlaying(movieRes.data));
       getUpcoming().then((movieRes) => setUpcoming(movieRes.data));
+      
+    
     }, []);
   
    
@@ -70,13 +76,33 @@ export default function Home() {
   return (
 
     <ScrollView contentContainerStyle={styles.container}>
+ <Video
+        source={images.BG} // Path to your video file
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          width: windowDimensions.width,
+          height: windowDimensions.height,
+          opacity:0.3
+        }}
+        resizeMode="cover"
+        
+        shouldPlay={true}
+        isLooping={true}
+        isMuted={true}
+        useNativeControls={false} // Disable native controls if needed
+         // Add this if you want the video to start muted
+      />
         <StatusBar
         style='auto'
         translucent={false}
         backgroundColor="black"
         />
         <View  style={styles.header}>
-
+    
             <Text style={
                 {
                     fontSize:23,
@@ -195,28 +221,25 @@ export default function Home() {
         style={[styles.input, { color: 'white' }]}
         onChangeText={(text) => setSearchText(text)}
         value={searchText}
+        ref={myRef}
         />
       <FontAwesome name="search" size={35} color="white" onPress={handleSearch}/>
         </View>
       <View style={{padding:10}} >
-      <ScrollView
+      <ScrollView style={{ flex: 1, maxHeight: 700,width:"100%" }}>
+  {searchResults.map((item) => (
+    <Moviecard
+      key={item.id}
+      title={item.title}
+      language={item.original_language}
+      voteAverage={item.vote_average}
+      voteCount={item.vote_count}
+      poster={item.poster_path}
+    />
+  ))}
+</ScrollView>
 
-      style={{flex:1,flexDirection:"column"}}
 
-    >
-      {searchResults.map((item) => (
-        <ScrollView key={item.id} style={{ padding: 10 }}>
-          <Moviecard
-            title={item.title}
-            language={item.original_language}
-            voteAverage={item.vote_average}
-            size={0.4}
-            voteCount={item.vote_count}
-            poster={item.poster_path}
-          />
-        </ScrollView>
-      ))}
-    </ScrollView>
 
 </View>
 
@@ -237,8 +260,9 @@ const styles = StyleSheet.create({
     alignItems: 'start',
     justifyContent: 'start',
     padding:"10px",
-    backgroundColor: "black",
-    color:"white"
+
+    color:"white",
+    backgroundColor:"black"
   },  modalContainer: {
     flex: 1,
     flexDirection:"row",
@@ -247,12 +271,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   modalContent: {
-    backgroundColor: 'black',
     padding: 20,
     borderRadius: 10,
     width: '100%',
     position:"absolute",
-    top:50,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -19,7 +19,7 @@ function Moviecard({title,poster,language,voteAverage,voteCount,size}) {
        }
       </ImageBackground>
       <View>
-        <Text numberOfLines={3} style={{ width: 230 * size,fontSize:size>1?null:15*size,color:"white"}}>{title}</Text>
+        <Text numberOfLines={3} style={{ width: 230 * size,fontSize:size>1?0:15*size,color:"white"}}>{title}</Text>
         <View style={styles.movieSubtitleContainer}>
           <Text style={styles.movieSubtitle}>{getLanguage(language).english_name}</Text>
           <View style={styles.rowAndcenter}>
