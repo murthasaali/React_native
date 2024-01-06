@@ -86,7 +86,7 @@ export default function Home({navigation}) {
           right: 0,
           width: windowDimensions.width,
           height: windowDimensions.height,
-          opacity:0.3
+          opacity:0.2
         }}
         resizeMode="cover"
         
@@ -110,8 +110,7 @@ export default function Home({navigation}) {
                     opacity:0.5
                 }
             }>Now playing</Text>
-            <Text style={{color:"white"}}>View All</Text>
-            <FontAwesome name="search" size={35} color="white"  onPress={openModal}  />
+            <FontAwesome name="search" size={35} color="white"  onPress={openModal} style={{ opacity:0.5}} />
         </View>
 
         <View style={{padding:10}} >
@@ -149,7 +148,7 @@ export default function Home({navigation}) {
                voteAverage={item.vote_average}
                voteCount={item.vote_count}
                poster={item.poster_path}
-               onPress={()=>navigation.navigate("movie",{movieId:item.id})}
+               onPress={()=>navigation.navigate("movie",{movieId:item.id,language:item.original_language})}
                />}
             />
 
@@ -164,7 +163,6 @@ export default function Home({navigation}) {
       opacity:0.5
     }
 }>Coming soon...</Text>
-<Text style={{color:"white"}}>View All</Text>
 </View>
       <View style={{padding:10}} >
 
@@ -184,6 +182,9 @@ export default function Home({navigation}) {
              size={0.5}
              voteCount={item.vote_count}
              poster={item.poster_path}
+                            
+                            onPress={()=>navigation.navigate("movie",{movieId:item.id,language:item.original_language})}
+
              />}
           />
 
@@ -235,6 +236,7 @@ export default function Home({navigation}) {
       language={item.original_language}
       voteAverage={item.vote_average}
       voteCount={item.vote_count}
+      onPress={()=>navigation.navigate("movie",{movieId:item.id,language:item.original_language})}
       poster={item.poster_path}
     />
   ))}
@@ -269,7 +271,7 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
   },
   modalContent: {
     padding: 20,

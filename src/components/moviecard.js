@@ -21,7 +21,7 @@ function Moviecard({title,poster,language,voteAverage,voteCount,size,onPress}) {
       <View>
         <Text numberOfLines={3} style={{ width: 230 * size,fontSize:size>1?0:15*size,color:"white"}}>{title}</Text>
         <View style={styles.movieSubtitleContainer}>
-          <Text style={styles.movieSubtitle}>{getLanguage(language).english_name}</Text>
+          <Text style={styles.movieSubtitle}>{getLanguage(language).iso_639_1}</Text>
           <View style={styles.rowAndcenter}>
             <Ionicons name="ios-heart" size={20*size} style={{ marginRight: 10 }} color="red" />
             <Text style={{color:"white"}}>{voteCount}</Text>
