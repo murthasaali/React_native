@@ -3,10 +3,10 @@ import { StyleSheet, Text, TouchableOpacity, View ,Image,ImageBackground} from '
 import { Ionicons } from '@expo/vector-icons';
 import images from '../constants/images';
 import { getLanguage, getPoster } from '../service/MovieService';
-function Moviecard({title,poster,language,voteAverage,voteCount,size}) {
+function Moviecard({title,poster,language,voteAverage,voteCount,size,onPress}) {
     const [liked,setLiked]=useState("false")
   return (
-    <TouchableOpacity activeOpacity={0.9} style={{ borderRadius: 20 }} resizeMode="cover">
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={{ borderRadius: 20 }} resizeMode="cover">
       <ImageBackground imageStyle={{borderRadius:20}} style={{...styles.container,width:230*size,height:340*size}} source={{uri:getPoster(poster)}}>
        <View style={{...styles.imdbIconContainer,paddingVertical:3*size}}>
         <Image source={images.IMDB} style={{...styles.imdbImage,height:20*size,width:50*size}}/>

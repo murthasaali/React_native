@@ -15,7 +15,7 @@ import images from '../constants/images';
 import { Entypo } from '@expo/vector-icons';
 import { getNowPlaying,getPoster,getSearchData, getUpcoming } from '../service/MovieService';
 const geners=["all","action","comedy","hagsgh"]
-export default function Home() {
+export default function Home({navigation}) {
   const windowDimensions = Dimensions.get('window');
     const [state,setstate]=useState("all")
     const [nowPlaying,setnowPlaying]=useState({})
@@ -55,7 +55,7 @@ export default function Home() {
 
   }, [modalAnimation]);
 
-    const handleSearch = async () => {
+    const handleSearch = async (navigation) => {
       searchText.trim()
         
       
@@ -97,7 +97,7 @@ export default function Home() {
          // Add this if you want the video to start muted
       />
         <StatusBar
-        style='auto'
+        style='light'
         translucent={false}
         backgroundColor="black"
         />
@@ -149,6 +149,7 @@ export default function Home() {
                voteAverage={item.vote_average}
                voteCount={item.vote_count}
                poster={item.poster_path}
+               onPress={()=>navigation.navigate("movie",{movieId:item.id})}
                />}
             />
 
