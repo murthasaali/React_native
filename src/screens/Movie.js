@@ -86,6 +86,8 @@ console.log(error)    });
         <TouchableOpacity style={styles.play}         onPress={() => Linking.openURL(getTrailor(videoToken))}
    >
         <Feather name="play-circle" size={70} color="white" />
+
+        
                 </TouchableOpacity>
         <TouchableOpacity>
         <FontAwesome name="share" size={30} color="white" onPress={onShare}/>
